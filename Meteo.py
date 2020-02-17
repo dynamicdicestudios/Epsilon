@@ -20,8 +20,6 @@ def window(current, status):
         Logo=PhotoImage(file="overcast.png")
     else:
         Logo = None
-
-    current = round(current)
     
     LogoCanvas=Canvas(root,height=1170, width=700)
     LogoCanvas.create_image(200,120,image=Logo)

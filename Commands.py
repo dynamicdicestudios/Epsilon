@@ -27,11 +27,13 @@ def weather_command():
     
     status = hourly.data[0].d['summary']
     current = hourly.data[0].d['temperature']
+    current = round(current)
     
     temp_min = str(daily.data[0].d)
     #temp = temp_min + "/" + temp_max
     
     window(current, status)
+    return str(current)+"°C" 
     
 def manual():
     cm = Communication()
@@ -144,9 +146,11 @@ def open_command(command):
         if  WORDS[0] in command.title():
             cm.voice("opening notepad!!")#says that
             os.startfile('notepad.exe')#starts notepad
+            return "Opening Notepad"
         elif WORDS[1] in command.title():
             cm.voice("opening google chrome!!")
             os.startfile("chrome.exe")
+            return "Opening Google Chrome"
         elif WORDS[2] in command.title():
             cm.voice("opening microsoft word!!")
             os.startfile("winword.exe")

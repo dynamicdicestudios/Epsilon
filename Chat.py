@@ -30,7 +30,7 @@ def respond(text):
     elif WORDS[2].lower() in text:
         notes_command('w')
     elif WORDS[4].lower() in text:
-        weather_command()
+        response = weather_command()
     elif WORDS[5].lower() in text:
         response = jokes_command()
     else:
