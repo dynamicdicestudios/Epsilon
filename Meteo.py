@@ -21,7 +21,7 @@ def window(current, status):
     else:
         Logo = None
 
-    #current = int(round(current, 0))
+    current = round(current)
     
     LogoCanvas=Canvas(root,height=1170, width=700)
     LogoCanvas.create_image(200,120,image=Logo)
@@ -29,7 +29,7 @@ def window(current, status):
 
     LogoCanvas.create_text(50,40,text=str(current)+"°C", font=("time new roman",30))
     LogoCanvas.create_text(50,80,text="Toronto", font=("time new roman",15))
-    LogoCanvas.create_text(78,100,text=status, font=("time new roman",15))
+    LogoCanvas.create_text(70,100,text=status, font=("time new roman",15))
     #LogoCanvas.create_text(50,130,text="Today \n" + temp, font=("time new roman",10))
     root.mainloop()
     #root.configure(background='light blue')

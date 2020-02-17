@@ -1,4 +1,4 @@
-import time
+import time, threading
 from tkinter import *
 from Commands import *
 from Communication import Communication
@@ -65,18 +65,20 @@ def main():
         messages.insert(INSERT, 'You: %s\n\n' % input_get)
         messages.config(state=DISABLED)
         input_user.set('')
+        window.update()
         
         epsilon(input_get)
         
         return "break"
     
     def epsilon(text):
-        response = respond(text)
+        answer = respond(text)
         messages.config(state="normal")
-        messages.insert(INSERT, 'Epsilon: %s\n\n' % response)
+        messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
         messages.config(state=DISABLED)
 
-        cm.voice(response)
+        thread = threading.Thread(target=cm.voice, args = (answer,))
+        thread.start()
 
     frame = Frame(window)  
     input_field.bind("<Return>", enter_pressed)
