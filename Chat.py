@@ -67,7 +67,11 @@ def main():
         input_user.set('')
         window.update()
         
-        epsilon(input_get)
+        if "weather" in input_get.lower():
+            epsilon(input_get)
+        else:    
+            thread = threading.Thread(target=epsilon, args = (input_get,))
+            thread.start()
         
         return "break"
     
@@ -77,8 +81,9 @@ def main():
         messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
         messages.config(state=DISABLED)
 
-        thread = threading.Thread(target=cm.voice, args = (answer,))
-        thread.start()
+        """thread = threading.Thread(target=cm.voice, args = (answer,))
+        thread.start()"""
+        cm.voice(answer)
 
     frame = Frame(window)  
     input_field.bind("<Return>", enter_pressed)
