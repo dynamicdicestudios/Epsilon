@@ -11,7 +11,8 @@ from Communication import Communication
 def jokes_command():
     cm = Communication()
     from random import choice
-    cm.voice(choice([geek, icanhazdad, icndb])())
+    funny = choice([geek, icanhazdad, icndb])
+    return funny
     
 def weather_command():
     api_key = "a7fd1a0c2e6b92fcd9ead78f712103a8"

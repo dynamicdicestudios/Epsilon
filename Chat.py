@@ -18,6 +18,8 @@ def greeting():
     return greeting
 
 def respond(text):
+    cm = Communication()
+    
     WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke"]
     SORRY = "Sorry, I can't do that."
 
@@ -30,9 +32,11 @@ def respond(text):
     elif WORDS[4] in text:
         weather_command()
     elif WORDS[5] in text:
-        jokes_command()
+        response = jokes_command()
     else:
-        cm.voice(SORRY)
+        response = SORRY
+        
+    return response
     
 def main():
     window = Tk()
@@ -62,9 +66,17 @@ def main():
         messages.config(state=DISABLED)
         input_user.set('')
         
-        response = respond(input_get)
+        epsilon(input_get)
         
         return "break"
+    
+    def epsilon(text):
+        response = respond(text)
+        messages.config(state="normal")
+        messages.insert(INSERT, 'Epsilon: %s\n\n' % response)
+        messages.config(state=DISABLED)
+
+        cm.voice(response)
 
     frame = Frame(window)  
     input_field.bind("<Return>", enter_pressed)
