@@ -23,15 +23,15 @@ def respond(text):
     WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke"]
     SORRY = "Sorry, I can't do that."
 
-    if WORDS[0] in text:
+    if WORDS[0].lower() in text:
         open_command(text)
-    elif WORDS[1] in text:
+    elif WORDS[1].lower() in text:
         system_command(text)
-    elif WORDS[2] in text:
+    elif WORDS[2].lower() in text:
         notes_command('w')
-    elif WORDS[4] in text:
+    elif WORDS[4].lower() in text:
         weather_command()
-    elif WORDS[5] in text:
+    elif WORDS[5].lower() in text:
         response = jokes_command()
     else:
         response = SORRY

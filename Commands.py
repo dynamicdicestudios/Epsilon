@@ -11,7 +11,7 @@ from Communication import Communication
 def jokes_command():
     cm = Communication()
     from random import choice
-    funny = choice([geek, icanhazdad, icndb])
+    funny = choice([geek, icanhazdad, icndb])()
     return funny
     
 def weather_command():
