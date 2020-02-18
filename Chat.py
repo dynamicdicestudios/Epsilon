@@ -42,19 +42,25 @@ def main():
     window = Tk()
     cm = Communication()
 
+    window.title("Epsilon")
+
     messages = Text(window)
     messages.pack()
 
-    greet = greeting()
+    #greet = greeting()
 
-    cm.voice(greet)
+    #cm.voice(greet)
 
-    messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
+    #messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
     messages.config(state=DISABLED)
 
     input_user = StringVar()
     input_field = Entry(window, text=input_user)
     input_field.pack(side=BOTTOM, fill=X)
+    
+    window.configure(background='light grey')
+    messages.configure(background='light steel blue')
+    input_field.configure(background='light goldenrod')
 
     def enter_pressed(event):
         input_get = input_field.get()
@@ -67,7 +73,7 @@ def main():
         input_user.set('')
         window.update()
         
-        if "weather" in input_get.lower():
+        if "weather" in input_get.lower() or "open" in input_get.lower():
             epsilon(input_get)
         else:    
             thread = threading.Thread(target=epsilon, args = (input_get,))
