@@ -11,13 +11,15 @@ def window(current, status):
     elif "Fog" in status:
         Logo=PhotoImage(file="mist.png")
     elif "Rain" in status:
-        Logo=PhotoImage(file="rain.png")
+        Logo=PhotoImage(file="rain.jpg")
     elif "Cloud" in status:
         Logo=PhotoImage(file="clouds.png")
     elif "Snow" in status:
         Logo=PhotoImage(file="snow.png")
     elif "Overcast" in status:
         Logo=PhotoImage(file="overcast.png")
+    elif "Drizzle" in status:
+        Logo=PhotoImage(file="drizzle.png")    
     else:
         Logo = None
     
@@ -30,4 +32,3 @@ def window(current, status):
     LogoCanvas.create_text(70,100,text=status, font=("time new roman",15))
     #LogoCanvas.create_text(50,130,text="Today \n" + temp, font=("time new roman",10))
     root.mainloop()
-    #root.configure(background='light blue')

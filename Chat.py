@@ -8,7 +8,7 @@ def greeting():
     current_hour = time.strftime("%H", t)
     if int(current_hour) < 12:
         greeting = "Good Morning! I'm Epsilon!"
-    elif int(current_hour) > 12 and int(current_hour) < 16:
+    elif int(current_hour) >= 12 and int(current_hour) < 16:
         greeting = "Good Afternoon! I'm Epsilon!"
     elif int(current_hour) > 16:
         greeting = "Good Evening! I'm Epsilon!"
@@ -47,11 +47,11 @@ def main():
     messages = Text(window)
     messages.pack()
 
-    #greet = greeting()
+    greet = greeting()
 
     #cm.voice(greet)
 
-    #messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
+    messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
     messages.config(state=DISABLED)
 
     input_user = StringVar()
@@ -67,7 +67,7 @@ def main():
         if input_get.isspace():
             return "break"
         
-        messages.config(state="normal")
+        messages.config(state=NORMAL)
         messages.insert(INSERT, 'You: %s\n\n' % input_get)
         messages.config(state=DISABLED)
         input_user.set('')
@@ -89,7 +89,7 @@ def main():
 
         """thread = threading.Thread(target=cm.voice, args = (answer,))
         thread.start()"""
-        cm.voice(answer)
+        #cm.voice(answer)
 
     frame = Frame(window)  
     input_field.bind("<Return>", enter_pressed)
