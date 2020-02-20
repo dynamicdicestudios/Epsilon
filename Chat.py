@@ -49,9 +49,11 @@ def main():
     messages.pack()
 
     greet = greeting()
-
-    #cm.voice(greet)
-
+    try:
+        cm.voice(greet)
+    except:
+        pass
+    
     messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
     messages.config(state=DISABLED)
 
@@ -84,13 +86,16 @@ def main():
     
     def epsilon(text):
         answer = respond(text)
-        messages.config(state=NORMAL)
-        messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
-        messages.config(state=DISABLED)
-
-        """thread = threading.Thread(target=cm.voice, args = (answer,))
-        thread.start()"""
-        #cm.voice(answer)
+        if answer.isspace():
+            pass
+        else:
+            messages.config(state=NORMAL)
+            messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
+            messages.config(state=DISABLED)
+            try:
+                cm.voice(answer)
+            except:
+                pass
 
     frame = Frame(window)  
     input_field.bind("<Return>", enter_pressed)

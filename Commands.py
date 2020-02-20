@@ -14,7 +14,11 @@ def music_command():
 def jokes_command():
     cm = Communication()
     from random import choice
-    funny = choice([geek, icanhazdad, icndb])()
+    try:
+        funny = choice([geek, icanhazdad, icndb])()
+    except:
+        return "You are not connected to any Wifi source"
+    
     while "â" in funny:
         funny = funny.replace("â", "'")
         
@@ -24,8 +28,10 @@ def weather_command():
     api_key = "a7fd1a0c2e6b92fcd9ead78f712103a8"
     lat = 43.651070
     lng = -79.347015
-
-    forecast = forecastio.load_forecast(api_key, lat, lng)
+    try:
+        forecast = forecastio.load_forecast(api_key, lat, lng)
+    except:
+        return "You are not connected to any Wifi source"
     hourly = forecast.hourly()
     daily = forecast.daily()
     
@@ -50,14 +56,17 @@ def manual():
                "shutdown or hibernate your device."
                "tell jokes and the weather"
                "and take notes. I hope I may be of assistance!")
-    #cm.voice(explain)
-    #cm.voice(instructions)
+    try:
+        cm.voice(explain)
+        cm.voice(instructions)
+    except:
+        pass
 
 def notes_command(mode, space=""):
     
     cm = Communication()
     def end():
-        #cm.voice(finish)
+        cm.voice(finish)
         while(True):
             #Beep sound to notify the user when to speak
             pygame.mixer.music.load('Sound.mp3')
@@ -71,15 +80,15 @@ def notes_command(mode, space=""):
                 break
             if not command["success"]:
                 break
-            #cm.voice("I didn't catch that. What did you say?\n")
+            cm.voice("I didn't catch that. What did you say?\n")
 
         if "yes" in command["transcription"]:
-            #cm.voice("Very well! Appending punctuation!")
+            cm.voice("Very well! Appending punctuation!")
             punctuation()
         elif "no" in command["transcription"]:
             notes_command('a', "\n")
         else:
-            #cm.voice("Sorry, that's not a command.")
+            cm.voice("Sorry, that's not a command.")
             end()
 
     def punctuation():
@@ -107,7 +116,7 @@ def notes_command(mode, space=""):
     start = "Ready when you are!"
     finish = "Will that be all?"
     
-    #cm.voice(start)
+    cm.voice(start)
     
     while(True):
         #Beep sound to notify the user when to speak
@@ -122,7 +131,7 @@ def notes_command(mode, space=""):
             break
         if not command["success"]:
             break
-        #cm.voice("I didn't catch that. What did you say?\n")
+        cm.voice("I didn't catch that. What did you say?\n")
 
     notes.write(space + "{}".format(command["transcription"].capitalize()))
     notes.close()
@@ -132,11 +141,13 @@ def notes_command(mode, space=""):
 def system_command(command):
     cm = Communication()
     WORDS = ["Shutdown", "Hibernate"]
+    try:
+        cm.voice("Goodbye!")
+    except:
+        pass
     if WORDS[0] in command.title():
-        #cm.voice("Goodbye!")
         subprocess.call(["shutdown", "/s"])
     elif WORDS[1] in command.title():
-        #cm.voice("Goodbye!")
         subprocess.call(["shutdown", "/h"])
             
 def open_command(command):
@@ -148,25 +159,43 @@ def open_command(command):
     for word in WORDS:
         if word in command.title(): 
             command_is_correct = True
+            break
 
     if command_is_correct:
-        if  WORDS[0] in command.title():
-            #cm.voice("opening notepad!!")#says that
+        if WORDS[0] in command.title():
+            try:
+                cm.voice("opening notepad!!")#says that
+            except:
+                pass
             os.startfile('notepad.exe')#starts notepad
             return "Opening Notepad"
         elif WORDS[1] in command.title():
-            #cm.voice("opening google chrome!!")
+            try:
+                cm.voice("opening google chrome!!")
+            except:
+                pass
             os.startfile("chrome.exe")
             return "Opening Google Chrome"
         elif WORDS[2] in command.title():
-            #cm.voice("opening microsoft word!!")
+            try:
+                cm.voice("opening microsoft word!!")
+            except:
+                pass
             os.startfile("winword.exe")
         elif WORDS[3] in command.title():
-            #cm.voice("opening microsoft powerpoint!!")
+            try:
+                cm.voice("opening microsoft powerpoint!!")
+            except:
+                pass
             os.startfile("powerpnt.exe")
         elif WORDS[4] in command.title():
-            #cm.voice("opening microsoft excel!!")
+            try:
+                cm.voice("opening microsoft excel!!")
+            except:
+                pass
             os.startfile("excel.exe")
     else:
-        pass
-        #cm.voice("Sorry, that's not a command.")
+        try:
+            cm.voice("Sorry, that's not a command.")
+        except:
+            return "Sorry, that's not a command."
