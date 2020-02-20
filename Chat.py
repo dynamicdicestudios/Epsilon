@@ -22,7 +22,8 @@ def respond(text):
     
     WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke"]
     SORRY = "Sorry, I can't do that."
-
+    response = ""
+    
     if WORDS[0].lower() in text:
         open_command(text)
     elif WORDS[1].lower() in text:
@@ -83,7 +84,7 @@ def main():
     
     def epsilon(text):
         answer = respond(text)
-        messages.config(state="normal")
+        messages.config(state=NORMAL)
         messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
         messages.config(state=DISABLED)
 
