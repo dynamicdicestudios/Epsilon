@@ -8,6 +8,9 @@ from joke.jokes import *
 
 from Communication import Communication
 
+def music_command():
+    pass
+
 def jokes_command():
     cm = Communication()
     from random import choice
