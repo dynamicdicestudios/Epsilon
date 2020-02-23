@@ -1,5 +1,5 @@
 import speech_recognition as sr
-import pygame, os, time
+import os, time, playsound
 from gtts import gTTS
 
 class Communication():
@@ -52,14 +52,11 @@ class Communication():
         return response
     
     def voice(self, words):
-        
-        translate=gTTS(text=words ,lang='en-uk')
-        translate.save('output.wav')
-
-        pygame.mixer.init()
-        path_name=os.path.realpath('output.wav')
-        real_path=path_name.replace('\\','\\\\')
-        pygame.mixer.music.load(open(real_path,"rb"))
-        pygame.mixer.music.play()
-        while pygame.mixer.music.get_busy():
-            time.sleep(1)
+        speak = gTTS(text = words, lang ='en-uk') 
+        # saving the audio file given by google text to speech 
+        file = "output.mp3" 
+        speak.save(file) 
+          
+        # playsound package is used to play the same file. 
+        playsound.playsound(file, True)  
+        os.remove(file)

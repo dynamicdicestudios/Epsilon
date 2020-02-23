@@ -1,3 +1,4 @@
+import time
 from tkinter import *
 
 def window(current, status):
@@ -7,7 +8,12 @@ def window(current, status):
     root.geometry("400x200+290+100")
 
     if "Clear" in status:
-        Logo=PhotoImage(file="clear.png")
+        t = time.localtime()
+        current_hour = time.strftime("%H", t)
+        if int(current_hour) < 18:
+            Logo=PhotoImage(file="clear_day.png")
+        else:
+            Logo=PhotoImage(file="clear_night.jpg")
     elif "Fog" in status:
         Logo=PhotoImage(file="mist.png")
     elif "Rain" in status:
@@ -19,7 +25,9 @@ def window(current, status):
     elif "Overcast" in status:
         Logo=PhotoImage(file="overcast.png")
     elif "Drizzle" in status:
-        Logo=PhotoImage(file="drizzle.png")    
+        Logo=PhotoImage(file="drizzle.png")
+    elif "Windy" in status:
+        Logo=PhotoImage(file="windy.png")    
     else:
         Logo = None
     
@@ -29,6 +37,7 @@ def window(current, status):
 
     LogoCanvas.create_text(50,40,text=str(current)+"°C", font=("time new roman",30))
     LogoCanvas.create_text(50,80,text="Toronto", font=("time new roman",15))
-    LogoCanvas.create_text(70,100,text=status, font=("time new roman",15))
+    LogoCanvas.create_text(50,100,text=status, font=("time new roman",15))
     #LogoCanvas.create_text(50,130,text="Today \n" + temp, font=("time new roman",10))
     root.mainloop()
+

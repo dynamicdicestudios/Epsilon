@@ -1,4 +1,4 @@
-import random, time, os, pygame.mixer, subprocess, string, forecastio
+import random, time, os, playsound, subprocess, string, forecastio
 
 from Meteo import *
 
@@ -69,11 +69,7 @@ def notes_command(mode, space=""):
         cm.voice(finish)
         while(True):
             #Beep sound to notify the user when to speak
-            pygame.mixer.music.load('Sound.mp3')
-            pygame.mixer.music.set_volume(0.3)
-            pygame.mixer.music.play()
-            time.sleep(1)
-            pygame.mixer.music.stop()
+            playsound.playsound('Sound.mp3')
             
             command = cm.recognize_speech_from_mic()
             if command["transcription"]:
@@ -120,12 +116,8 @@ def notes_command(mode, space=""):
     
     while(True):
         #Beep sound to notify the user when to speak
-        pygame.mixer.music.load('Sound.mp3')
-        pygame.mixer.music.set_volume(0.3)
-        pygame.mixer.music.play()
-        time.sleep(1)
-        pygame.mixer.music.stop()
-        
+        playsound.playsound('Sound.mp3')
+
         command = cm.recognize_speech_from_mic()
         if command["transcription"]:
             break
@@ -154,48 +146,40 @@ def open_command(command):
     cm = Communication()
     # set the list of programs that can be opened
     WORDS = ["Notepad", "Google Chrome", "Microsoft Word", "Microsoft Powerpoint", "Microsoft Excel"]
-
+    sorry = "Sorry, I can't seem to find that program."
+    program_exists = False
+    
     # determine if command is correct and if any attempts remain
     for word in WORDS:
         if word in command.title(): 
-            command_is_correct = True
+            program_exists = True
             break
 
-    if command_is_correct:
+    if program_exists:
         if WORDS[0] in command.title():
-            try:
-                cm.voice("opening notepad!!")#says that
-            except:
-                pass
             os.startfile('notepad.exe')#starts notepad
-            return "Opening Notepad"
+            return "Opened Notepad"
         elif WORDS[1] in command.title():
-            try:
-                cm.voice("opening google chrome!!")
-            except:
-                pass
             os.startfile("chrome.exe")
-            return "Opening Google Chrome"
+            return "Opened Google Chrome"
         elif WORDS[2] in command.title():
-            try:
-                cm.voice("opening microsoft word!!")
-            except:
-                pass
             os.startfile("winword.exe")
+            return "Opened Microsoft Word"
         elif WORDS[3] in command.title():
-            try:
-                cm.voice("opening microsoft powerpoint!!")
-            except:
-                pass
             os.startfile("powerpnt.exe")
+            return "Opened Microsoft Powerpoint"
         elif WORDS[4] in command.title():
-            try:
-                cm.voice("opening microsoft excel!!")
-            except:
-                pass
             os.startfile("excel.exe")
+            return "Opened Microsoft Excel"
     else:
+        program = ""
+        command = command.split(" ")
+        for i in range(len(command)):
+            if ".exe" in command[i]:
+                program = word[i]
+                break
         try:
-            cm.voice("Sorry, that's not a command.")
+            os.startfile(program)
+            return "Opened " + program
         except:
-            return "Sorry, that's not a command."
+            return sorry

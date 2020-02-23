@@ -8,9 +8,9 @@ def greeting():
     current_hour = time.strftime("%H", t)
     if int(current_hour) < 12:
         greeting = "Good Morning! I'm Epsilon!"
-    elif int(current_hour) >= 12 and int(current_hour) < 16:
+    elif int(current_hour) >= 12 and int(current_hour) <= 16:
         greeting = "Good Afternoon! I'm Epsilon!"
-    elif int(current_hour) > 16:
+    elif int(current_hour) >= 17:
         greeting = "Good Evening! I'm Epsilon!"
     else:
         greeting = "Good Night!"
@@ -25,9 +25,9 @@ def respond(text):
     response = ""
     
     if WORDS[0].lower() in text:
-        open_command(text)
+        response = open_command(text)
     elif WORDS[1].lower() in text:
-        system_command(text)
+        response = system_command(text)
     elif WORDS[2].lower() in text:
         notes_command('w')
     elif WORDS[4].lower() in text:
@@ -76,7 +76,7 @@ def main():
         input_user.set('')
         window.update()
         
-        if "weather" in input_get.lower() or "open" in input_get.lower():
+        if "weather" in input_get.lower():
             epsilon(input_get)
         else:    
             thread = threading.Thread(target=epsilon, args = (input_get,))
@@ -86,7 +86,7 @@ def main():
     
     def epsilon(text):
         answer = respond(text)
-        if answer.isspace():
+        if "shutdown" in answer.lower() or "hibernate" in answer.lower():
             pass
         else:
             messages.config(state=NORMAL)
