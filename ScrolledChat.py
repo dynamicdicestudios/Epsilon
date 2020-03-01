@@ -43,6 +43,14 @@ messages = Text(window)
 
 window.title("Epsilon")
 
+greet = greeting()
+    try:
+        cm.voice(greet)
+    except:
+        pass
+    
+messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
+messages.config(state=DISABLED)
 
 messages.pack(fill='both', expand='yes')
 editArea = tkst.ScrolledText(
