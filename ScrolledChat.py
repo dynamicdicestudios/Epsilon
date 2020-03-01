@@ -16,6 +16,28 @@ def greeting():
 
     return greeting
 
+def respond(text):
+    cm = Communication()
+    
+    WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke"]
+    SORRY = "Sorry, I can't do that."
+    response = ""
+    
+    if WORDS[0].lower() in text:
+        response = open_command(text)
+    elif WORDS[1].lower() in text:
+        response = system_command(text)
+    elif WORDS[2].lower() in text:
+        notes_command('w')
+    elif WORDS[4].lower() in text:
+        response = weather_command()
+    elif WORDS[5].lower() in text:
+        response = jokes_command()
+    else:
+        response = SORRY
+        
+    return response
+
 window = Tk()
 messages = Text(window)
 
@@ -39,7 +61,23 @@ def enter_pressed(event):
     editArea.config(state=DISABLED)
     input_user.set('')
     
-    return "break"
+    if "weather" in input_get.lower():
+            epsilon(input_get)
+        else:    
+            thread = threading.Thread(target=epsilon, args = (input_get,))
+            thread.start()
+        
+        return "break"
+    
+def epsilon(text):
+    answer = respond(text)
+    messages.config(state=NORMAL)
+    messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
+    messages.config(state=DISABLED)
+    try:
+        cm.voice(answer)
+    except:
+        pass
 input_user = StringVar()
 input_field = Entry(window, text=input_user)
 input_field.pack(side=BOTTOM, fill=X)
