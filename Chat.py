@@ -86,16 +86,13 @@ def main():
     
     def epsilon(text):
         answer = respond(text)
-        if "shutdown" in answer.lower() or "hibernate" in answer.lower():
+        messages.config(state=NORMAL)
+        messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
+        messages.config(state=DISABLED)
+        try:
+            cm.voice(answer)
+        except:
             pass
-        else:
-            messages.config(state=NORMAL)
-            messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
-            messages.config(state=DISABLED)
-            try:
-                cm.voice(answer)
-            except:
-                pass
 
     frame = Frame(window)  
     input_field.bind("<Return>", enter_pressed)

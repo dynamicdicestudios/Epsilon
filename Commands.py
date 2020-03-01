@@ -139,8 +139,10 @@ def system_command(command):
         pass
     if WORDS[0] in command.title():
         subprocess.call(["shutdown", "/s"])
+        return "Goodbye!"
     elif WORDS[1] in command.title():
         subprocess.call(["shutdown", "/h"])
+        return "Goodbye!"
             
 def open_command(command):
     cm = Communication()
