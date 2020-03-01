@@ -37,67 +37,69 @@ def respond(text):
         response = SORRY
         
     return response
+def main():
+    window = Tk()
+    messages = Text(window)
 
-window = Tk()
-messages = Text(window)
+    window.title("Epsilon")
 
-window.title("Epsilon")
-
-greet = greeting()
+    greet = greeting()
     try:
         cm.voice(greet)
     except:
         pass
-    
-messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
-messages.config(state=DISABLED)
-
-messages.pack(fill='both', expand='yes')
-editArea = tkst.ScrolledText(
-    master = messages,
-    wrap   = WORD,
-    width  = 20,
-    height = 10
-)
-def enter_pressed(event):
-    input_get = input_field.get()
-    if input_get.isspace():
-        return "break"
-    
-    editArea.config(state="normal")
-    editArea.insert(INSERT, 'You: %s\n\n' % input_get)
-    editArea.config(state=DISABLED)
-    input_user.set('')
-    
-    if "weather" in input_get.lower():
-            epsilon(input_get)
-        else:    
-            thread = threading.Thread(target=epsilon, args = (input_get,))
-            thread.start()
         
-        return "break"
-    
-def epsilon(text):
-    answer = respond(text)
-    messages.config(state=NORMAL)
-    messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
+    messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
     messages.config(state=DISABLED)
-    try:
-        cm.voice(answer)
-    except:
-        pass
-input_user = StringVar()
-input_field = Entry(window, text=input_user)
-input_field.pack(side=BOTTOM, fill=X)
 
-editArea.configure(background='light steel blue')
-messages.configure(background='light grey')
-input_field.configure(background='light goldenrod')
+    messages.pack(fill='both', expand='yes')
+    editArea = tkst.ScrolledText(
+        master = messages,
+        wrap   = WORD,
+        width  = 20,
+        height = 10
+    )
+    def enter_pressed(event):
+        input_get = input_field.get()
+        if input_get.isspace():
+            return "break"
+        
+        editArea.config(state="normal")
+        editArea.insert(INSERT, 'You: %s\n\n' % input_get)
+        editArea.config(state=DISABLED)
+        input_user.set('')
+        
+        if "weather" in input_get.lower():
+                epsilon(input_get)
+            else:    
+                thread = threading.Thread(target=epsilon, args = (input_get,))
+                thread.start()
+            
+            return "break"
+        
+    def epsilon(text):
+        answer = respond(text)
+        messages.config(state=NORMAL)
+        messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
+        messages.config(state=DISABLED)
+        try:
+            cm.voice(answer)
+        except:
+            pass
+    input_user = StringVar()
+    input_field = Entry(window, text=input_user)
+    input_field.pack(side=BOTTOM, fill=X)
 
-input_field.bind("<Return>", enter_pressed)
+    editArea.configure(background='light steel blue')
+    messages.configure(background='light grey')
+    input_field.configure(background='light goldenrod')
 
-# Don't use widget.place(), use pack or grid instead, since
-# They behave better on scaling the window -- and you don't
-# have to calculate it manually!
-editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
-window.mainloop()
+    input_field.bind("<Return>", enter_pressed)
+
+    # Don't use widget.place(), use pack or grid instead, since
+    # They behave better on scaling the window -- and you don't
+    # have to calculate it manually!
+    editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
+    window.mainloop()
+
+main()
