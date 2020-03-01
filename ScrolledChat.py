@@ -1,7 +1,6 @@
 import time
 from tkinter import *
-from Commands import *
-from Communication import Communication
+import tkinter.scrolledtext as tkst
 
 def greeting():
     t = time.localtime()
@@ -17,40 +16,42 @@ def greeting():
 
     return greeting
 
-def main():
-    window = Tk()
-    cm = Communication()
+window = Tk()
+messages = Text(window)
 
-    messages = Text(window)
-    messages.pack()
+window.title("Epsilon")
 
-    greet = greeting()
 
-    cm.voice(greet)
-
-    messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
-    messages.config(state=DISABLED)
-
-    input_user = StringVar()
-    input_field = Entry(window, text=input_user)
-    input_field.pack(side=BOTTOM, fill=X)
-
-    def enter_pressed(event):
-        input_get = input_field.get()
-        if input_get.isspace():
-            return "break"
-        
-        messages.config(state="normal")
-        messages.insert(INSERT, 'You: %s\n\n' % input_get)
-        messages.config(state=DISABLED)
-        input_user.set('')
-        
+messages.pack(fill='both', expand='yes')
+editArea = tkst.ScrolledText(
+    master = messages,
+    wrap   = WORD,
+    width  = 20,
+    height = 10
+)
+def enter_pressed(event):
+    input_get = input_field.get()
+    if input_get.isspace():
         return "break"
+    
+    editArea.config(state="normal")
+    editArea.insert(INSERT, 'You: %s\n\n' % input_get)
+    editArea.config(state=DISABLED)
+    input_user.set('')
+    
+    return "break"
+input_user = StringVar()
+input_field = Entry(window, text=input_user)
+input_field.pack(side=BOTTOM, fill=X)
 
-    frame = Frame(window)  
-    input_field.bind("<Return>", enter_pressed)
-    frame.pack()
+editArea.configure(background='light steel blue')
+messages.configure(background='light grey')
+input_field.configure(background='light goldenrod')
 
-    window.mainloop()
+input_field.bind("<Return>", enter_pressed)
 
-main()
+# Don't use widget.place(), use pack or grid instead, since
+# They behave better on scaling the window -- and you don't
+# have to calculate it manually!
+editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
+window.mainloop()
