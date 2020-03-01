@@ -1,6 +1,11 @@
-import time
+import time, threading
 from tkinter import *
 import tkinter.scrolledtext as tkst
+from Commands import *
+from Communication import Communication
+from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
+
 
 def greeting():
     t = time.localtime()
@@ -48,9 +53,6 @@ def main():
         cm.voice(greet)
     except:
         pass
-        
-    messages.insert(INSERT, "Epsilon: " + greet + "\n\n")
-    messages.config(state=DISABLED)
 
     messages.pack(fill='both', expand='yes')
     editArea = tkst.ScrolledText(
@@ -59,6 +61,10 @@ def main():
         width  = 20,
         height = 10
     )
+
+    editArea.insert(INSERT, "Epsilon: " + greet + "\n\n")
+    editArea.config(state=DISABLED)
+    
     def enter_pressed(event):
         input_get = input_field.get()
         if input_get.isspace():
@@ -70,18 +76,41 @@ def main():
         input_user.set('')
         
         if "weather" in input_get.lower():
-                epsilon(input_get)
-            else:    
-                thread = threading.Thread(target=epsilon, args = (input_get,))
-                thread.start()
+            epsilon(input_get)
+        else:    
+            thread = threading.Thread(target=epsilon, args = (input_get,))
+            thread.start()
             
             return "break"
         
     def epsilon(text):
-        answer = respond(text)
-        messages.config(state=NORMAL)
-        messages.insert(INSERT, 'Epsilon: %s\n\n' % answer)
-        messages.config(state=DISABLED)
+        chatbot = (
+            'Epsilon',
+            storage_adapter='chatterbot.storage.SQLStorageAdapter',
+            logic_adapters=[
+                'chatterbot.logic.MathematicalEvaluation',
+                'chatterbot.logic.TimeLogicAdapter',
+                'chatterbot.logic.BestMatch'
+            ]
+        )
+
+        conversation = [
+            "Hello",
+            "Hi there!",
+            "How are you doing?",
+            "I'm doing great.",
+            "That is good to hear",
+            "Thank you.",
+            "You're welcome."
+        ]
+
+        trainer = ListTrainer(chatbot)
+        trainer.train(conversation)
+        
+        answer = respond(chatbot.get_response(text))
+        editArea.config(state=NORMAL)
+        editArea.insert(INSERT, 'Epsilon: %s\n\n' % answer)
+        editArea.config(state=DISABLED)
         try:
             cm.voice(answer)
         except:
