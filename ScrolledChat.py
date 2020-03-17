@@ -3,9 +3,6 @@ from tkinter import *
 import tkinter.scrolledtext as tkst
 from Commands import *
 from Communication import Communication
-from chatterbot import ChatBot
-from chatterbot.trainers import ListTrainer
-
 
 def greeting():
     t = time.localtime()
@@ -21,28 +18,46 @@ def greeting():
 
     return greeting
 
-def respond(text):
-    cm = Communication()
-    
-    WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke"]
+def respond(text):    
+    WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke", "Dictionary"]
+    DICT = ["Mean", "Meaning", "Synonym", "Antonym"]
     SORRY = "Sorry, I can't do that."
     response = ""
-    
-    if WORDS[0].lower() in text:
-        response = open_command(text)
-    elif WORDS[1].lower() in text:
-        response = system_command(text)
-    elif WORDS[2].lower() in text:
-        notes_command('w')
-    elif WORDS[4].lower() in text:
-        response = weather_command()
-    elif WORDS[5].lower() in text:
-        response = jokes_command()
+    if DICT[0].lower() in text or DICT[1].lower() in text:
+        word = text.split(" ")
+        word = word[word.index("mean") - 1] 
+        response = dictionary(["meaning", word])
+    elif DICT[2].lower() in text:
+        word = text.split(" ")
+        try:
+            word = word[word.index("of") + 1]
+        except:
+            word = word[word.index("for") + 1]
+        response = dictionary(["synonym", word])
+    elif DICT[3].lower() in text:
+        word = text.split(" ")
+        try:
+            word = word[word.index("of") + 1]
+        except:
+            word = word[word.index("for") + 1]
+        response = dictionary(["antonym", word])
     else:
-        response = SORRY
+        if WORDS[0].lower() in text:
+            response = open_command(text)
+        elif WORDS[1].lower() in text:
+            response = system_command(text)
+        elif WORDS[2].lower() in text:
+            notes_command('w')
+        elif WORDS[4].lower() in text:
+            response = weather_command()
+        elif WORDS[5].lower() in text:
+            response = jokes_command()
+        else:
+            response = SORRY
         
     return response
 def main():
+    cm = Communication()
     window = Tk()
     messages = Text(window)
 
@@ -64,6 +79,7 @@ def main():
 
     editArea.insert(INSERT, "Epsilon: " + greet + "\n\n")
     editArea.config(state=DISABLED)
+    messages.config(state=DISABLED)
     
     def enter_pressed(event):
         input_get = input_field.get()
@@ -84,37 +100,16 @@ def main():
             return "break"
         
     def epsilon(text):
-        chatbot = (
-            'Epsilon',
-            storage_adapter='chatterbot.storage.SQLStorageAdapter',
-            logic_adapters=[
-                'chatterbot.logic.MathematicalEvaluation',
-                'chatterbot.logic.TimeLogicAdapter',
-                'chatterbot.logic.BestMatch'
-            ]
-        )
-
-        conversation = [
-            "Hello",
-            "Hi there!",
-            "How are you doing?",
-            "I'm doing great.",
-            "That is good to hear",
-            "Thank you.",
-            "You're welcome."
-        ]
-
-        trainer = ListTrainer(chatbot)
-        trainer.train(conversation)
-        
-        answer = respond(chatbot.get_response(text))
+        answer = respond(text)
         editArea.config(state=NORMAL)
         editArea.insert(INSERT, 'Epsilon: %s\n\n' % answer)
         editArea.config(state=DISABLED)
         try:
-            cm.voice(answer)
+            for ans in answer.values():
+                cm.voice(ans)
         except:
-            pass
+            cm.voice(answer)
+
     input_user = StringVar()
     input_field = Entry(window, text=input_user)
     input_field.pack(side=BOTTOM, fill=X)

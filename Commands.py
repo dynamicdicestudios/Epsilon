@@ -8,6 +8,18 @@ from joke.jokes import *
 
 from Communication import Communication
 
+from PyDictionary import PyDictionary
+
+def dictionary(request):
+    dictionary=PyDictionary()
+    if request[0] == "meaning":
+        return dictionary.meaning(request[1])
+    elif request[0] == "synonym":
+        return dictionary.synonym(request[1])
+    elif request[0] == "antonym":
+        return dictionary.antonym(request[1])
+        
+
 def music_command():
     pass
 

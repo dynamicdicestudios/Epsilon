@@ -17,7 +17,7 @@ def window(current, status):
     elif "Fog" in status:
         Logo=PhotoImage(file="mist.png")
     elif "Rain" in status:
-        Logo=PhotoImage(file="rain.jpg")
+        Logo=PhotoImage(file="rain.png")
     elif "Cloud" in status:
         Logo=PhotoImage(file="clouds.png")
     elif "Snow" in status:
