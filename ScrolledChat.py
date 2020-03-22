@@ -106,7 +106,7 @@ def main():
         editArea.config(state=DISABLED)
         try:
             for ans in answer.values():
-                cm.voice(ans)
+                cm.voice(ans[0])
         except:
             cm.voice(answer)
 

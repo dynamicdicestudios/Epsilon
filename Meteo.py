@@ -13,7 +13,7 @@ def window(current, status):
         if int(current_hour) < 18:
             Logo=PhotoImage(file="clear_day.png")
         else:
-            Logo=PhotoImage(file="clear_night.jpg")
+            Logo=PhotoImage(file="clear_night.PNG")
     elif "Fog" in status:
         Logo=PhotoImage(file="mist.png")
     elif "Rain" in status:

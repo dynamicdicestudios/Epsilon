@@ -13,13 +13,24 @@ from PyDictionary import PyDictionary
 def dictionary(request):
     dictionary=PyDictionary()
     if request[0] == "meaning":
-        return dictionary.meaning(request[1])
+        answer = dictionary.meaning(request[1])
+        if answer == None:
+            return "I don't know that word."
+        else:
+            return answer
     elif request[0] == "synonym":
-        return dictionary.synonym(request[1])
+        answer = dictionary.synonym(request[1])
+        if answer == None:
+            return "There are no synonyms."
+        else:
+            return answer
     elif request[0] == "antonym":
-        return dictionary.antonym(request[1])
+        answer = dictionary.antonym(request[1])
+        if answer == None:
+            return "There are no antonyms."
+        else:
+            return answer
         
-
 def music_command():
     pass
 
