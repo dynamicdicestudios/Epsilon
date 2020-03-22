@@ -49,10 +49,8 @@ def main():
     window.title("Epsilon")
 
     greet = greeting()
-    try:
-        cm.voice(greet)
-    except:
-        pass
+
+    cm.voice(greet)
 
     messages.pack(fill='both', expand='yes')
     editArea = tkst.ScrolledText(
@@ -89,13 +87,9 @@ def main():
         editArea.config(state=NORMAL)
         editArea.insert(INSERT, 'Epsilon: %s\n\n' % answer)
         editArea.config(state=DISABLED)
-        try:
-            for ans in answer.values():
-                cm.voice(ans[random.randint(0, len(answer.values()))])
-                break
-        except:
-            cm.voice(answer)
 
+        cm.voice(answer)
+    
     input_user = StringVar()
     input_field = Entry(window, text=input_user)
     input_field.pack(side=BOTTOM, fill=X)

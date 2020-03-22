@@ -1,5 +1,5 @@
 import speech_recognition as sr
-import os, time, playsound, datetime
+import os, time, playsound, datetime, pyttsx3
 
 from gtts import gTTS
 
@@ -53,13 +53,20 @@ class Communication():
         return response
     
     def voice(self, words):
-        speak = gTTS(text = words, lang ='en-uk') 
-        # saving the audio file given by google text to speech 
-        date = datetime.datetime.now().strftime("%d%m%Y%H%M%S")
-        file = "voice"+date+".mp3"
-        speak.save(file) 
-          
-        # playsound package is used to play the same file. 
-        playsound.playsound(file, True)  
-        os.remove(file)
-
+        try:
+            speak = gTTS(text = words, lang ='en-uk') 
+            # saving the audio file given by google text to speech 
+            date = datetime.datetime.now().strftime("%d%m%Y%H%M%S")
+            file = "voice"+date+".mp3"
+            speak.save(file) 
+              
+            # playsound package is used to play the same file. 
+            playsound.playsound(file, True)  
+            os.remove(file)
+        except:
+            engine = pyttsx3.init()
+            engine.setProperty('volume',1.0)
+            voices = engine.getProperty('voices')
+            engine.setProperty('voice', voices[2].id)
+            engine.say(words)
+            engine.runAndWait()
