@@ -64,14 +64,13 @@ def manual():
                "After pressing the speech button, wait for the beep."
                "Here's a list of what I can do!:")
     instructions =("I can open programs."
-               "shutdown or hibernate your device."
-               "tell jokes and the weather"
-               "and take notes. I hope I may be of assistance!")
-    try:
+                   "shutdown or hibernate your device."
+                   "tell jokes, take notes"
+                   "and provide you with (almost) any information."
+                   "I hope I may be of assistance!")
         cm.voice(explain)
         cm.voice(instructions)
-    except:
-        pass
+    return instructions
 
 def notes_command(mode, space=""):
     
