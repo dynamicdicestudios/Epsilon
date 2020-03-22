@@ -19,7 +19,7 @@ def greeting():
     return greeting
 
 def respond(text):    
-    WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke"]
+    WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke", "Time"]
     SORRY = "Sorry, I'm not sure what you mean."
     response = ""
     if WORDS[0].lower() in text:
@@ -32,6 +32,8 @@ def respond(text):
         response = weather_command()
     elif WORDS[5].lower() in text:
         response = jokes_command()
+    elif WORDS[6].lower() in text:
+        response = clock()
     else:
         try:
             response = wolfram(text)
