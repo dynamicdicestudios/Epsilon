@@ -8,11 +8,11 @@ from joke.jokes import *
 
 from Communication import Communication
 
-def clock():
+def time_command():
     t = time.localtime()
     return time.strftime("%H:%M", t)
 
-def wolfram(request):
+def wolfram_command(request):
     client = wolframalpha.Client('PK4488-PYV5K4RK5G')
 
     res = client.query(request)
