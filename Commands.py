@@ -1,4 +1,4 @@
-import random, time, os, playsound, subprocess, string, forecastio
+import random, time, os, playsound, subprocess, string, forecastio, wolframalpha
 
 from Meteo import *
 
@@ -8,28 +8,12 @@ from joke.jokes import *
 
 from Communication import Communication
 
-from PyDictionary import PyDictionary
+def wolfram(request):
+    client = wolframalpha.Client('PK4488-PYV5K4RK5G')
 
-def dictionary(request):
-    dictionary=PyDictionary()
-    if request[0] == "meaning":
-        answer = dictionary.meaning(request[1])
-        if answer == None:
-            return "I don't know that word."
-        else:
-            return answer
-    elif request[0] == "synonym":
-        answer = dictionary.synonym(request[1])
-        if answer == None:
-            return "There are no synonyms."
-        else:
-            return answer
-    elif request[0] == "antonym":
-        answer = dictionary.antonym(request[1])
-        if answer == None:
-            return "There are no antonyms."
-        else:
-            return answer
+    res = client.query(request)
+    output = next(res.results).text
+    return output
         
 def music_command():
     pass

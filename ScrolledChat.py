@@ -19,40 +19,23 @@ def greeting():
     return greeting
 
 def respond(text):    
-    WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke", "Dictionary"]
-    DICT = ["Mean", "Meaning", "Synonym", "Antonym"]
-    SORRY = "Sorry, I can't do that."
+    WORDS = ["Open", "System", "Notes", "Manual", "Weather", "Joke"]
+    SORRY = "Sorry, I'm not sure what you mean."
     response = ""
-    if DICT[0].lower() in text or DICT[1].lower() in text:
-        word = text.split(" ")
-        word = word[word.index("mean") - 1] 
-        response = dictionary(["meaning", word])
-    elif DICT[2].lower() in text:
-        word = text.split(" ")
-        try:
-            word = word[word.index("of") + 1]
-        except:
-            word = word[word.index("for") + 1]
-        response = dictionary(["synonym", word])
-    elif DICT[3].lower() in text:
-        word = text.split(" ")
-        try:
-            word = word[word.index("of") + 1]
-        except:
-            word = word[word.index("for") + 1]
-        response = dictionary(["antonym", word])
+    if WORDS[0].lower() in text:
+        response = open_command(text)
+    elif WORDS[1].lower() in text:
+        response = system_command(text)
+    elif WORDS[2].lower() in text:
+        notes_command('w')
+    elif WORDS[4].lower() in text:
+        response = weather_command()
+    elif WORDS[5].lower() in text:
+        response = jokes_command()
     else:
-        if WORDS[0].lower() in text:
-            response = open_command(text)
-        elif WORDS[1].lower() in text:
-            response = system_command(text)
-        elif WORDS[2].lower() in text:
-            notes_command('w')
-        elif WORDS[4].lower() in text:
-            response = weather_command()
-        elif WORDS[5].lower() in text:
-            response = jokes_command()
-        else:
+        try:
+            response = wolfram(text)
+        except:
             response = SORRY
         
     return response
