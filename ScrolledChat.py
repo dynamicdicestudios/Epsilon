@@ -1,4 +1,4 @@
-import time, threading
+import time, threading, random
 from tkinter import *
 import tkinter.scrolledtext as tkst
 from Commands import *
@@ -106,7 +106,8 @@ def main():
         editArea.config(state=DISABLED)
         try:
             for ans in answer.values():
-                cm.voice(ans[0])
+                cm.voice(ans[random.randint(0, len(answer.values()))])
+                break
         except:
             cm.voice(answer)
 
