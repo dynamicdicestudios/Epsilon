@@ -33,10 +33,10 @@ def respond(text):
     elif WORDS[5].lower() in text:
         response = jokes_command()
     elif WORDS[6].lower() in text:
-        response = clock()
+        response = time_command()
     else:
         try:
-            response = wolfram(text)
+            response = wolfram_command(text)
         except:
             response = SORRY
         
