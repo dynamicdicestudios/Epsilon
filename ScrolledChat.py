@@ -9,7 +9,7 @@ def greeting():
     current_hour = time.strftime("%H", t)
     if int(current_hour) < 12:
         greeting = "Good Morning! I'm Epsilon!"
-    elif int(current_hour) > 12 and int(current_hour) < 16:
+    elif int(current_hour) >= 12 and int(current_hour) <= 16:
         greeting = "Good Afternoon! I'm Epsilon!"
     elif int(current_hour) > 16:
         greeting = "Good Evening! I'm Epsilon!"
@@ -19,23 +19,25 @@ def greeting():
     return greeting
 
 def respond(text):    
-    WORDS = ["Open", "System", "Notes", "Weather", "Joke", "Time", "Help", "Work"]
+    WORDS = ["Open", "System", "Notes", "Weather", "Joke", "Time", "Help", "Work", "Battery"]
     SORRY = "Sorry, I'm not sure what you mean."
     response = ""
-    if WORDS[0].lower() in text:
-        response = open_command(text)
-    elif WORDS[1].lower() in text:
-        response = system_command(text)
-    elif WORDS[2].lower() in text:
+    if WORDS[0].lower() in text.lower():
+        response = open_command(text.lower())
+    elif WORDS[1].lower() in text.lower():
+        response = system_command(text.lower())
+    elif WORDS[2].lower() in text.lower():
         notes_command('w')
-    elif WORDS[3].lower() in text:
+    elif WORDS[3].lower() in text.lower():
         response = weather_command()
-    elif WORDS[4].lower() in text:
+    elif WORDS[4].lower() in text.lower():
         response = jokes_command()
-    elif WORDS[5].lower() in text:
+    elif WORDS[5].lower() in text.lower():
         response = time_command()
-    elif WORDS[6].lower() in text or WORDS[7].lower() in text:
+    elif WORDS[6].lower() in text.lower() or WORDS[7].lower() in text.lower():
         response = manual()
+    elif WORDS[8].lower() in text.lower():
+        response = battery_info()
     else:
         try:
             response = wolfram_command(text)
@@ -43,6 +45,7 @@ def respond(text):
             response = SORRY
         
     return response
+
 def main():
     cm = Communication()
     window = Tk()

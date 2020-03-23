@@ -1,4 +1,4 @@
-import random, time, os, playsound, subprocess, string, forecastio, wolframalpha
+import random, time, os, playsound, subprocess, string, forecastio, wolframalpha, psutil
 
 from Meteo import *
 
@@ -7,6 +7,10 @@ from tkinter import *
 from joke.jokes import *
 
 from Communication import Communication
+
+def battery_info():
+    battery = psutil.sensors_battery()
+    return str(battery.percent) + " percent remaining."
 
 def time_command():
     t = time.localtime()
@@ -68,8 +72,8 @@ def manual():
                    "tell jokes, take notes"
                    "and provide you with (almost) any information."
                    "I hope I may be of assistance!")
-        cm.voice(explain)
-        cm.voice(instructions)
+    cm.voice(explain)
+    cm.voice(instructions)
     return instructions
 
 def notes_command(mode, space=""):
