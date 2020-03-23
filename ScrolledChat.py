@@ -51,7 +51,7 @@ def main():
     window = Tk()
     messages = Text(window)
     photo = PhotoImage(file = "back.png") 
-    Button(window, text = 'Click Me !', image = photo, height = 10, width = 10).pack(side = BOTTOM) 
+    Button(window, text = 'Click Me !', image = photo, height = 10, width = 10).place(x=150, y=150)
 
     window.title("Epsilon")
 
