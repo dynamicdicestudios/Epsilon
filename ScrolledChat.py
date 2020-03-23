@@ -50,6 +50,8 @@ def main():
     cm = Communication()
     window = Tk()
     messages = Text(window)
+    photo = PhotoImage(file = "back.png") 
+    Button(window, text = 'Click Me !', image = photo, height = 10, width = 10).pack(side = BOTTOM) 
 
     window.title("Epsilon")
 
