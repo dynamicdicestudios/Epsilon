@@ -50,8 +50,11 @@ def main():
     cm = Communication()
     window = Tk()
     messages = Text(window)
-    photo = PhotoImage(file = "back.png") 
-    Button(window, text = 'Click Me !', image = photo, height = 10, width = 10).place(x=150, y=150)
+    speak = PhotoImage(file = "back.png")
+    options = PhotoImage(file = "back.png")
+    
+    Button(window, text = 'Click Me !', image = speak, height = 15, width = 25).place(x=177, y=187)
+    Button(window, text = 'Click Me !', image = options, height = 15, width = 18).place(x=0, y=187)
 
     window.title("Epsilon")
 
@@ -99,7 +102,7 @@ def main():
     
     input_user = StringVar()
     input_field = Entry(window, text=input_user)
-    input_field.pack(side=BOTTOM, fill=X)
+    input_field.pack(side=BOTTOM, fill=None, ipadx=15)
 
     editArea.configure(background='light steel blue')
     messages.configure(background='light grey')
