@@ -99,6 +99,7 @@ def main():
                         break
                     cm.voice(epsilon(requests))
         window.deiconify()
+        
     def listen():
         misunderstand = "I didn't catch that. What did you say?"
         
