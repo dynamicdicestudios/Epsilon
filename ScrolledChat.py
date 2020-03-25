@@ -1,4 +1,4 @@
-import time, threading, random
+import time, threading, random, playsound
 from tkinter import *
 import tkinter.scrolledtext as tkst
 from Commands import *
@@ -19,7 +19,7 @@ def greeting():
     return greeting
 
 def respond(text):    
-    WORDS = ["Open", "System", "Notes", "Weather", "Joke", "Time", "Help", "Work", "Battery"]
+    WORDS = ["Open", "System", "Notes", "Weather", "Joke", "Time", "Help", "Work", "Battery", "Button"]
     SORRY = "Sorry, I'm not sure what you mean."
     response = ""
     if WORDS[0].lower() in text.lower():
@@ -38,24 +38,24 @@ def respond(text):
         response = manual()
     elif WORDS[8].lower() in text.lower():
         response = battery_info()
+    elif WORDS[9].lower() in text.lower():
+        response = buttons_info()
     else:
         try:
             response = wolfram_command(text)
         except:
             response = SORRY
         
-    return response
+    return response    
 
 def main():
     cm = Communication()
     window = Tk()
     messages = Text(window)
-    speak = PhotoImage(file = "back.png")
-    options = PhotoImage(file = "back.png")
     
-    Button(window, text = 'Click Me !', image = speak, height = 15, width = 25).place(x=177, y=187)
-    Button(window, text = 'Click Me !', image = options, height = 15, width = 18).place(x=0, y=187)
-
+    speak = PhotoImage(file = "speaker_icon.png")
+    options = PhotoImage(file = "headset_icon.png")
+    
     window.title("Epsilon")
 
     greet = greeting()
@@ -73,6 +73,49 @@ def main():
     editArea.insert(INSERT, "Epsilon: " + greet + "\n\n")
     editArea.config(state=DISABLED)
     messages.config(state=DISABLED)
+
+    input_user = StringVar()
+    input_field = Entry(window, text=input_user)
+    input_field.pack(side=BOTTOM, fill=None, ipadx=15)
+
+    editArea.configure(background='light steel blue')
+    messages.configure(background='light grey')
+    input_field.configure(background='light goldenrod')
+
+    # Don't use widget.place(), use pack or grid instead, since
+    # They behave better on scaling the window -- and you don't
+    # have to calculate it manually!
+    editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
+
+    def listen():
+        misunderstand = "I didn't catch that. What did you say?"
+        
+        input_field.config(state=DISABLED)
+        playsound.playsound('Sound.mp3', True)
+        
+        command = cm.recognize_speech_from_mic()        
+        if command["transcription"] or not command["success"]:
+            editArea.config(state="normal")
+            editArea.insert(INSERT, 'You: %s\n\n' % command["transcription"])
+            editArea.config(state=DISABLED)
+
+            input_field.config(state="normal")
+
+            epsilon(command["transcription"])
+
+        elif command["error"]:
+            input_field.config(state="normal")
+            epsilon(" ")
+        """else:
+            editArea.config(state="normal")
+            editArea.insert(INSERT, 'You: %s\n\n' % misunderstand)
+            editArea.config(state=DISABLED)
+            cm.voice(misunderstand)"""
+            
+    def start():
+        stt = threading.Thread(target=listen)
+        stt.start()
+
     
     def enter_pressed(event):
         input_get = input_field.get()
@@ -99,21 +142,14 @@ def main():
         editArea.config(state=DISABLED)
 
         cm.voice(answer)
+
+    input_field.bind("<Return>", enter_pressed)    
+    stt = threading.Thread(target=listen)
+
     
-    input_user = StringVar()
-    input_field = Entry(window, text=input_user)
-    input_field.pack(side=BOTTOM, fill=None, ipadx=15)
-
-    editArea.configure(background='light steel blue')
-    messages.configure(background='light grey')
-    input_field.configure(background='light goldenrod')
-
-    input_field.bind("<Return>", enter_pressed)
-
-    # Don't use widget.place(), use pack or grid instead, since
-    # They behave better on scaling the window -- and you don't
-    # have to calculate it manually!
-    editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
+    Button(window, text = '', image = speak, height = 15, width = 25, command=start).place(x=177, y=187)
+    Button(window, text = '', image = options, height = 15, width = 18).place(x=0, y=187)
+    
     window.mainloop()
 
 main()
