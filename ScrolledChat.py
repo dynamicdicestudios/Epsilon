@@ -87,6 +87,18 @@ def main():
     # have to calculate it manually!
     editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
 
+    def hands_free():
+        window.withdraw()
+        while True:
+            check = cm.recognize_speech_from_mic()
+            if check["transcription"] and "epsilon" in check["transcription"].lower():
+                playsound.playsound('Sound.mp3', True)
+                command = cm.recognize_speech_from_mic()
+                if command["transcription"] or not command["success"]:
+                    if "exit" in command["transcription"].lower():
+                        break
+                    cm.voice(epsilon(requests))
+        window.deiconify()
     def listen():
         misunderstand = "I didn't catch that. What did you say?"
         
@@ -148,7 +160,7 @@ def main():
 
     
     Button(window, text = '', image = speak, height = 15, width = 25, command=start).place(x=177, y=187)
-    Button(window, text = '', image = options, height = 15, width = 18).place(x=0, y=187)
+    Button(window, text = '', image = options, height = 15, width = 18, command=hands_free).place(x=0, y=187)
     
     window.mainloop()
 
