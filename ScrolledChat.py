@@ -88,6 +88,7 @@ def main():
     editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
 
     def hands_free():
+        cm.voice("Entering hands-free mode.")
         window.withdraw()
         while True:
             check = cm.recognize_speech_from_mic()
