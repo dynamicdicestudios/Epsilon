@@ -14,7 +14,7 @@ def buttons_info():
             "Simply say Epsilon and wait for the beep "
             "and I will listen to your request. "
             "The button on the right is speaking mode. "
-            "This allows you to verbally declare your request. "
+            "This allows you to verbally declare your request, after the beep, "
             "And thus temporarily disables the input field.") 
 
 def battery_info():
