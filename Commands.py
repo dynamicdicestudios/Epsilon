@@ -8,6 +8,15 @@ from joke.jokes import *
 
 from Communication import Communication
 
+def buttons_info():
+    return ("The button on the left activates hands-free mode. "
+            "This allows you to use me without the GUI. "
+            "Simply say Epsilon and wait for the beep "
+            "and I will listen to your request. "
+            "The button on the right is speaking mode. "
+            "This allows you to verbally declare your request. "
+            "And thus temporarily disables the input field.") 
+
 def battery_info():
     battery = psutil.sensors_battery()
     return str(battery.percent) + " percent remaining."
