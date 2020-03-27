@@ -1,6 +1,11 @@
-import random, time, os, playsound, subprocess, string, forecastio, wolframalpha, psutil
+import random, time, os, playsound, subprocess, string
+import forecastio, wolframalpha, psutil
+
+from multiprocessing.pool import ThreadPool
 
 from Meteo import *
+
+from Files import *
 
 from tkinter import * 
 
@@ -19,7 +24,10 @@ def buttons_info():
 
 def battery_info():
     battery = psutil.sensors_battery()
-    return str(battery.percent) + " percent remaining."
+    if battery.power_plugged:
+        return str(battery.percent) + " percent remaining and charging."
+    else:
+        return str(battery.percent) + " percent remaining and not charging."
 
 def time_command():
     t = time.localtime()
@@ -69,7 +77,7 @@ def weather_command():
     #temp = temp_min + "/" + temp_max
     
     window(current, status)
-    return str(current)+"°C" 
+    return "It is currently " + current + "°C and " + status.lower() 
     
 def manual():
     cm = Communication()
@@ -83,7 +91,7 @@ def manual():
                    "I hope I may be of assistance!")
     cm.voice(explain)
     cm.voice(instructions)
-    return instructions
+    return explain, instructions
 
 def notes_command(mode, space=""):
     
@@ -169,42 +177,24 @@ def system_command(command):
             
 def open_command(command):
     cm = Communication()
-    # set the list of programs that can be opened
-    WORDS = ["Notepad", "Google Chrome", "Microsoft Word", "Microsoft Powerpoint", "Microsoft Excel"]
-    sorry = "Sorry, I can't seem to find that program."
-    program_exists = False
+    pool = ThreadPool(processes=1)
     
-    # determine if command is correct and if any attempts remain
-    for word in WORDS:
-        if word in command.title(): 
-            program_exists = True
-            break
+    sorry = "Sorry, I can't seem to find that program."
+    program = ""
 
-    if program_exists:
-        if WORDS[0] in command.title():
-            os.startfile('notepad.exe')#starts notepad
-            return "Opened Notepad"
-        elif WORDS[1] in command.title():
-            os.startfile("chrome.exe")
-            return "Opened Google Chrome"
-        elif WORDS[2] in command.title():
-            os.startfile("winword.exe")
-            return "Opened Microsoft Word"
-        elif WORDS[3] in command.title():
-            os.startfile("powerpnt.exe")
-            return "Opened Microsoft Powerpoint"
-        elif WORDS[4] in command.title():
-            os.startfile("excel.exe")
-            return "Opened Microsoft Excel"
+    async_result = pool.apply_async(exe_finder)
+    s, t = async_result.get()
+
+    words = command.split(" ")
+    for word in words:
+        if word.endswith(".exe"):
+            program = word
+    
+    if program in s:
+        os.startfile(program)
+        return "Starting " + program
+    elif program in t:
+        os.startfile(program)
+        return "Starting " + program
     else:
-        program = ""
-        command = command.split(" ")
-        for i in range(len(command)):
-            if ".exe" in command[i]:
-                program = word[i]
-                break
-        try:
-            os.startfile(program)
-            return "Opened " + program
-        except:
-            return sorry
+        return sorry
