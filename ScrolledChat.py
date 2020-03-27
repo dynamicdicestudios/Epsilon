@@ -70,7 +70,7 @@ def main():
         height = 10
     )
 
-    editArea.insert(INSERT, "Epsilon: " + greet + "\n\n")
+    editArea.insert(END, "Epsilon: " + greet + "\n\n")
     editArea.config(state=DISABLED)
     messages.config(state=DISABLED)
 
@@ -98,7 +98,7 @@ def main():
                 if command["transcription"] or not command["success"]:
                     if "exit" in command["transcription"].lower():
                         break
-                    cm.voice(epsilon(requests))
+                    cm.voice(epsilon(command["transcription"]))
         window.deiconify()
         
     def listen():
@@ -110,7 +110,7 @@ def main():
         command = cm.recognize_speech_from_mic()        
         if command["transcription"] or not command["success"]:
             editArea.config(state="normal")
-            editArea.insert(INSERT, 'You: %s\n\n' % command["transcription"])
+            editArea.insert(END, 'You: %s\n\n' % command["transcription"])
             editArea.config(state=DISABLED)
 
             input_field.config(state="normal")
@@ -137,7 +137,7 @@ def main():
             return "break"
         
         editArea.config(state="normal")
-        editArea.insert(INSERT, 'You: %s\n\n' % input_get)
+        editArea.insert(END, 'You: %s\n\n' % input_get)
         editArea.config(state=DISABLED)
         input_user.set('')
         
@@ -152,7 +152,7 @@ def main():
     def epsilon(text):
         answer = respond(text)
         editArea.config(state=NORMAL)
-        editArea.insert(INSERT, 'Epsilon: %s\n\n' % answer)
+        editArea.insert(END, 'Epsilon: %s\n\n' % answer)
         editArea.config(state=DISABLED)
 
         cm.voice(answer)
