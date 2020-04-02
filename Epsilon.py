@@ -91,15 +91,22 @@ def main():
     def hands_free():
         cm.voice("Entering hands-free mode.")
         window.withdraw()
-        while True:
+        end = False
+        while end == False:
             check = cm.recognize_speech_from_mic()
             if check["transcription"] and "epsilon" in check["transcription"].lower():
-                playsound.playsound('Sound.mp3', True)
-                command = cm.recognize_speech_from_mic()
-                if command["transcription"] or not command["success"]:
-                    if "exit" in command["transcription"].lower():
-                        break
-                    cm.voice(epsilon(command["transcription"]))
+                cm.voice("Yes, sir?")
+                while True:
+                    command = cm.recognize_speech_from_mic()
+                    if command["transcription"] or not command["success"]:
+                        if "exit" in command["transcription"].lower():
+                            end = True
+                            break
+                        elif "wait" in command["transcription"].lower():
+                            cm.voice("Sure, I'm hear when you need me!")
+                            break
+                        else:
+                            cm.voice(respond(command["transcription"]))
         window.deiconify()
         
     def listen():
