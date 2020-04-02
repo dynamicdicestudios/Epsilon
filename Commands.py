@@ -13,6 +13,9 @@ from joke.jokes import *
 
 from Communication import Communication
 
+def email_contacts():
+    pass
+
 def buttons_info():
     return ("The button on the left activates hands-free mode. "
             "This allows you to use me without the GUI. "
