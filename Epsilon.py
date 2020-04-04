@@ -2,6 +2,7 @@ import time, threading, random, playsound
 from tkinter import *
 import tkinter.scrolledtext as tkst
 from Commands import *
+from Model import model_response
 from Communication import Communication
 
 def greeting():
@@ -19,32 +20,34 @@ def greeting():
     return greeting
 
 def respond(text):    
-    WORDS = ["Open", "System", "Notes", "Weather", "Joke", "Time", "Help", "Work", "Battery", "Button"]
+    WORDS = ["Open", "System", "Notes", "Weather", "Joke", "Time", "Help", "Battery", "Button"]
     SORRY = "Sorry, I'm not sure what you mean."
     response = ""
-    if WORDS[0].lower() in text.lower():
-        response = open_command(text.lower())
-    elif WORDS[1].lower() in text.lower():
-        response = system_command(text.lower())
-    elif WORDS[2].lower() in text.lower():
-        notes_command('w')
-    elif WORDS[3].lower() in text.lower():
-        response = weather_command()
-    elif WORDS[4].lower() in text.lower():
-        response = jokes_command()
-    elif WORDS[5].lower() in text.lower():
-        response = time_command()
-    elif WORDS[6].lower() in text.lower() or WORDS[7].lower() in text.lower():
-        response = manual()
-    elif WORDS[8].lower() in text.lower():
-        response = battery_info()
-    elif WORDS[9].lower() in text.lower():
-        response = buttons_info()
+    model_results = model_response(text)
+    if model_results[0] in WORDS:
+        if WORDS[0].lower() in text.lower():
+            response = open_command(text.lower())
+        elif WORDS[1].lower() in text.lower():
+            response = system_command(text.lower())
+        elif WORDS[2].lower() in text.lower():
+            notes_command('w')
+        elif WORDS[3].lower() in text.lower():
+            response = weather_command()
+        elif WORDS[4].lower() in text.lower():
+            response = jokes_command()
+        elif WORDS[5].lower() in text.lower():
+            response = time_command()
+        elif WORDS[6].lower() in text.lower():
+            response = manual()
+        elif WORDS[7].lower() in text.lower():
+            response = battery_info()
+        elif WORDS[8].lower() in text.lower():
+            response = buttons_info()
     else:
         try:
             response = wolfram_command(text)
         except:
-            response = SORRY
+            response = model_results[1]
         
     return response    
 
