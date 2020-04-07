@@ -5,57 +5,57 @@
          "context_set": ""
         },
         {"tag": "age",
-         "patterns": ["how old", "what is your age", "how old are you", "age?"],
-         "responses": ["I am less than one year old.!", "Almost a year old, believe it or not!"],
+         "patterns": ["how long you have you existed", "what is your age", "how old are you", "age?"],
+         "responses": ["I am less than one year old!", "Almost a year old, believe it or not!"],
          "context_set": ""
         },
         {"tag": "name",
          "patterns": ["what is your name", "what should I call you", "whats your name?"],
-         "responses": ["I'm Epsilon!"],
+         "responses": ["I'm Epsilon!", "My name is Epsilon!"],
          "context_set": ""
         },
         {"tag": "open",
-         "patterns": ["Can you open ", "Can you run ", "Please run ", "Please open ", "Please start "],
+         "patterns": ["Can you open ", "Please run", "Please open"],
          "responses": ["open"],
          "context_set": ""
         },
         {"tag": "system",
-         "patterns": ["Hibernate", "Shutdown", "System hibernate", "System shutdown"],
+         "patterns": ["Hibernate", "Shutdown"],
          "responses": ["system"],
          "context_set": ""
         },
 		{"tag": "notes",
-         "patterns": ["Can you take some notes?", "Can you write what I say", "Can you record what I say", "Take notes "],
+         "patterns": ["Record what I say", "Take notes", "Write what I say"],
          "responses": ["notes"],
          "context_set": ""
         },
 		{"tag": "weather",
-         "patterns": ["Weather ", "What's it like outside ", "What is the temperature ", "Is it hot ", "Is it cold "],
+         "patterns": ["Weather", "What's it like outside", "Temperature", "Hot", "Cold", "Forecast"],
          "responses": ["weather"],
          "context_set": ""
         },
 		{"tag": "joke",
-         "patterns": ["Make me laugh ", "Tell me something funny ", "Tell me a joke ", "Tickle my funnybone "],
+         "patterns": ["Make me laugh", "Tell me something funny", "Joke"],
          "responses": ["joke"],
          "context_set": ""
         },
 		{"tag": "time",
-         "patterns": ["What time is it? ", "What is the hour of the day? "],
+         "patterns": ["What time is it?", "What is the hour of the day?"],
          "responses": ["time"],
          "context_set": ""
         },
 		{"tag": "help",
-         "patterns": ["Help please ", "How do you work ", "How do I use you ", "What can you do ", "How can you help me "],
+         "patterns": ["Help please", "What can you do", "How do I use you?"],
          "responses": ["help"],
          "context_set": ""
         },
 		{"tag": "battery",
-         "patterns": ["How much life do you have left ", "Battery percentage ", "How much until the computer is charged ", "When will the computer die", "Should I charge you now? "],
+         "patterns": ["How much life do you have left", "Battery percentage", "Charge", "How charged is the computer?"],
          "responses": ["battery"],
          "context_set": ""
         },
 		{"tag": "button",
-         "patterns": ["What does the left button do ", "What does the right button do ", "How do your buttons work ", "How do I speak to you? ", "How do I use hands-free mode "],
+         "patterns": ["What does the left button do", "What does the right button do", "How do I speak to you? ", "How do I use hands-free mode"],
          "responses": ["button"],
          "context_set": ""
         }

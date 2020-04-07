@@ -39,7 +39,7 @@ except:
 
     for doc in enumerate(docs_x):
         bag = []
-        
+        print(doc)
         wrds = [stemmer.stem(w[0]) for w in doc if type(w) is not int]
 
         for w in words:
@@ -48,7 +48,7 @@ except:
             else:
                 bag.append(0)
 
-        output_row = out_empty[:]
+        output_row = list(out_empty)
         output_row[labels.index(docs_y[doc[0]])] = 1
 
         training.append(bag)
@@ -63,17 +63,19 @@ except:
 tensorflow.reset_default_graph()
 
 net = tflearn.input_data(shape=[None, len(training[0])])
-net = tflearn.fully_connected(net, 8)
-net = tflearn.fully_connected(net, 8)
+net = tflearn.fully_connected(net, 12)
+net = tflearn.fully_connected(net, 12)
+net = tflearn.fully_connected(net, 12)
+net = tflearn.layers.core.dropout(net, 0.9)
 net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
-net = tflearn.regression(net)
+net = tflearn.regression(net, learning_rate=0.001)
 
 model = tflearn.DNN(net)
 
 #try:
     #model.load("model.tflearn")
 #except:
-model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
+model.fit(training, output, n_epoch=1000, batch_size=3, show_metric=True)
 model.save("model.tflearn")
 
 def bag_of_words(s, words):
