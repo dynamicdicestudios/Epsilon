@@ -2,52 +2,55 @@ import time, threading, random, playsound
 from tkinter import *
 import tkinter.scrolledtext as tkst
 from Commands import *
-from Model import model_response
+from Chatter import chatter_response
 from Communication import Communication
 
 def greeting():
     t = time.localtime()
     current_hour = time.strftime("%H", t)
     if int(current_hour) < 12:
-        greeting = "Good Morning! I'm Epsilon!"
+        greeting = "Good morning!"
     elif int(current_hour) >= 12 and int(current_hour) <= 16:
-        greeting = "Good Afternoon! I'm Epsilon!"
+        greeting = "Good afternoon!"
     elif int(current_hour) > 16:
-        greeting = "Good Evening! I'm Epsilon!"
+        greeting = "Good evening!"
     else:
         greeting = "Good Night!"
 
     return greeting
 
 def respond(text):    
-    WORDS = ["Open", "System", "Notes", "Weather", "Joke", "Time", "Help", "Battery", "Button"]
+    WORDS = ["Open", "System", "Notes", "Joke", "Time", "Help", "Battery", "Button", "Handsfree"]
     SORRY = "Sorry, I'm not sure what you mean."
     response = ""
-    model_results = model_response(text)
-    if model_results[0] in WORDS:
-        if WORDS[0].lower() in text.lower():
+    chatter_results = chatter_response(text)
+    if str(chatter_results) in WORDS:
+        if WORDS[0] == str(chatter_results):
             response = open_command(text.lower())
-        elif WORDS[1].lower() in text.lower():
+        elif WORDS[1] == str(chatter_results):
             response = system_command(text.lower())
-        elif WORDS[2].lower() in text.lower():
+        elif WORDS[2] == str(chatter_results):
             notes_command('w')
-        elif WORDS[3].lower() in text.lower():
-            response = weather_command()
-        elif WORDS[4].lower() in text.lower():
+        elif WORDS[3] == str(chatter_results):
             response = jokes_command()
-        elif WORDS[5].lower() in text.lower():
+        elif WORDS[4] == str(chatter_results):
             response = time_command()
-        elif WORDS[6].lower() in text.lower():
+        elif WORDS[5] == str(chatter_results):
             response = manual()
-        elif WORDS[7].lower() in text.lower():
+        elif WORDS[6] == str(chatter_results):
             response = battery_info()
-        elif WORDS[8].lower() in text.lower():
+        elif WORDS[7] == str(chatter_results):
             response = buttons_info()
+        elif WORDS[8] == str(chatter_results):
+            response = handsfree_info()
     else:
-        try:
-            response = wolfram_command(text)
-        except:
-            response = model_results[1]
+        if str(chatter_results) == "I'm not quite sure what you mean.":
+            try:
+                response = wolfram_command(text)
+            except:
+                response = str(chatter_results)
+        else:
+            response = str(chatter_results)
         
     return response    
 
@@ -61,6 +64,8 @@ def main():
     
     window.title("Epsilon")
     window.resizable(False, False)
+
+    respond("hi")
 
     greet = greeting()
 
@@ -111,9 +116,8 @@ def main():
                         else:
                             cm.voice(respond(command["transcription"]))
         window.deiconify()
-        
+
     def listen():
-        misunderstand = "I didn't catch that. What did you say?"
         
         input_field.config(state=DISABLED)
         playsound.playsound('Sound.mp3', True)
@@ -124,18 +128,12 @@ def main():
             editArea.insert(END, 'You: %s\n\n' % command["transcription"])
             editArea.config(state=DISABLED)
 
+            epsilon(command["transcription"])
             input_field.config(state="normal")
 
-            epsilon(command["transcription"])
-
-        elif command["error"]:
+        else:
             input_field.config(state="normal")
             epsilon(" ")
-        """else:
-            editArea.config(state="normal")
-            editArea.insert(INSERT, 'You: %s\n\n' % misunderstand)
-            editArea.config(state=DISABLED)
-            cm.voice(misunderstand)"""
             
     def start():
         stt = threading.Thread(target=listen)
@@ -151,14 +149,11 @@ def main():
         editArea.insert(END, 'You: %s\n\n' % input_get)
         editArea.config(state=DISABLED)
         input_user.set('')
-        
-        if "weather" in input_get.lower():
-            epsilon(input_get)
-        else:    
-            thread = threading.Thread(target=epsilon, args = (input_get,))
-            thread.start()
             
-            return "break"
+        thread = threading.Thread(target=epsilon, args = (input_get,))
+        thread.start()
+        
+        return "break"
         
     def epsilon(text):
         answer = respond(text)
@@ -168,13 +163,12 @@ def main():
 
         cm.voice(answer)
 
-    input_field.bind("<Return>", enter_pressed)    
-    stt = threading.Thread(target=listen)
-
+    input_field.bind("<Return>", enter_pressed)
     
     Button(window, text = '', image = speak, height = 15, width = 25, command=start).place(x=177, y=187)
     Button(window, text = '', image = options, height = 15, width = 18, command=hands_free).place(x=0, y=187)
     
     window.mainloop()
+    
 
 main()

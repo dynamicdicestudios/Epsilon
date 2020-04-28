@@ -1,9 +1,9 @@
 import random, time, os, playsound, subprocess, string
-import forecastio, wolframalpha, psutil
-
+import wolframalpha, psutil
+#import forecastio
 from multiprocessing.pool import ThreadPool
 
-from Meteo import *
+#from Meteo import *
 
 from Files import *
 
@@ -16,14 +16,22 @@ from Communication import Communication
 def email_contacts():
     pass
 
+def handsfree_info():
+    return ("After pressing the button on the left, the GUI will disappear. "
+            "Whenever you have a request, say 'Epsilon' and wait for me to "
+            "say 'Yes sir?' and I will listen to your request. When you wish "
+            "to exit hands-free mode, say 'exit' after I say 'Yes sir?'."
+            "Note: any requests made during hands-free mode will not show up "
+            "on the GUI.")
+
 def buttons_info():
     return ("The button on the left activates hands-free mode. "
             "This allows you to use me without the GUI. "
-            "Simply say Epsilon and wait for the beep "
+            "Simply say Epsilon and wait for me to say 'Yes sir?' "
             "and I will listen to your request. "
             "The button on the right is speaking mode. "
             "This allows you to verbally declare your request, after the beep, "
-            "And thus temporarily disables the input field.") 
+            "and temporarily disables the input field.")
 
 def battery_info():
     battery = psutil.sensors_battery()
@@ -59,6 +67,7 @@ def jokes_command():
         
     return funny
     
+"""
 def weather_command():
     api_key = "a7fd1a0c2e6b92fcd9ead78f712103a8"
     lat = 43.651070
@@ -81,20 +90,18 @@ def weather_command():
     
     window(current, status)
     return "It is currently " + current + "°C and " + status.lower() 
-    
+"""
+
 def manual():
     cm = Communication()
-    explain = ("I am a Windows 8.1 helper that was coded in Python."
-               "After pressing the speech button, wait for the beep."
-               "Here's a list of what I can do!:")
-    instructions =("I can open programs."
-                   "shutdown or hibernate your device."
-                   "tell jokes, take notes"
-                   "and provide you with (almost) any information."
+    explain = ("I am a Windows 8.1 helper that was coded in Python. "
+               "Here's a list of what I can do!: ")
+    instructions =("I can open programs, "
+                   "shutdown or hibernate your device, "
+                   "tell jokes, take notes "
+                   "and provide you with (almost) any information. "
                    "I hope I may be of assistance!")
-    cm.voice(explain)
-    cm.voice(instructions)
-    return explain, instructions
+    return explain + instructions
 
 def notes_command(mode, space=""):
     
