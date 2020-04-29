@@ -72,11 +72,11 @@ net = tflearn.regression(net, learning_rate=0.001)
 
 model = tflearn.DNN(net)
 
-#try:
-    #model.load("model.tflearn")
-#except:
-model.fit(training, output, n_epoch=1000, batch_size=3, show_metric=True)
-model.save("model.tflearn")
+try:
+    model.load("model.tflearn")
+except:
+    model.fit(training, output, n_epoch=1000, batch_size=1, show_metric=True)
+    model.save("model.tflearn")
 
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
@@ -92,12 +92,12 @@ def bag_of_words(s, words):
     return np.array(bag)
 
 def model_response(inp):
-    results = model.predict([bag_of_words(imp, words)])[0]
+    results = model.predict([bag_of_words(inp, words)])[0]
 
     results_index = np.argmax(results)
     tag = labels[results_index]
 
-    if results[results_index] > 0.7:
+    if results[results_index] > 0.8:
         for tg in data["intents"]:
             if tg['tag'] == tag:
                 responses = tg['responses']
@@ -105,3 +105,7 @@ def model_response(inp):
         return [tag, random.choice(responses)]
     else:
         return "Sorry, I'm not sure what you mean."
+
+while True:
+    inp = input()
+    print(model_response(inp))
