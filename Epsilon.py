@@ -24,12 +24,12 @@ def respond(text):
     SORRY = "Sorry, I'm not sure what you mean."
     response = ""
     chatter_results = chatter_response(text)
-    if str(chatter_results) in WORDS:
-        if WORDS[0] == str(chatter_results):
-            response = open_command(text.lower())
-        elif WORDS[1] == str(chatter_results):
-            response = system_command(text.lower())
-        elif WORDS[2] == str(chatter_results):
+    if WORDS[0].lower() in text:
+        response = open_command(text.lower())
+    elif WORDS[1].lower() in text:
+        response = system_command(text.lower())
+    elif str(chatter_results) in WORDS:
+        if WORDS[2] == str(chatter_results):
             notes_command('w')
         elif WORDS[3] == str(chatter_results):
             response = jokes_command()
