@@ -5,7 +5,7 @@ from Commands import *
 from Chatter import chatter_response
 from Communication import Communication
 
-def greeting():
+def greeting() -> str:
     t = time.localtime()
     current_hour = time.strftime("%H", t)
     if int(current_hour) < 12:
@@ -19,9 +19,9 @@ def greeting():
 
     return greeting
 
-def respond(text):    
+def respond(text: str) -> str:    
     WORDS = ["Open", "System", "Notes", "Joke", "Time", "Help", "Battery", "Button", "Handsfree"]
-    SORRY = "Sorry, I'm not sure what you mean."
+    SORRY = "I'm not quite sure what you mean."
     response = ""
     chatter_results = chatter_response(text)
     if WORDS[0].lower() in text:
@@ -44,7 +44,7 @@ def respond(text):
         elif WORDS[8] == str(chatter_results):
             response = handsfree_info()
     else:
-        if str(chatter_results) == "I'm not quite sure what you mean.":
+        if str(chatter_results) == SORRY:
             try:
                 response = wolfram_command(text)
             except:
@@ -118,7 +118,6 @@ def main():
         window.deiconify()
 
     def listen():
-        
         input_field.config(state=DISABLED)
         playsound.playsound('Sound.mp3', True)
         
@@ -128,12 +127,12 @@ def main():
             editArea.insert(END, 'You: %s\n\n' % command["transcription"])
             editArea.config(state=DISABLED)
 
-            epsilon(command["transcription"])
+            answer(command["transcription"])
             input_field.config(state="normal")
 
         else:
             input_field.config(state="normal")
-            epsilon(" ")
+            answer(" ")
             
     def start():
         stt = threading.Thread(target=listen)
@@ -150,12 +149,12 @@ def main():
         editArea.config(state=DISABLED)
         input_user.set('')
             
-        thread = threading.Thread(target=epsilon, args = (input_get,))
+        thread = threading.Thread(target=answer, args = (input_get,))
         thread.start()
         
         return "break"
         
-    def epsilon(text):
+    def answer(text:str):
         answer = respond(text)
         editArea.config(state=NORMAL)
         editArea.insert(END, 'Epsilon: %s\n\n' % answer)
