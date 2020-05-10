@@ -132,7 +132,8 @@ def main():
 
         else:
             input_field.config(state="normal")
-            answer(" ")
+            thread = threading.Thread(target=answer, args = (input_get,))
+            thread.start()
             
     def start():
         stt = threading.Thread(target=listen)
