@@ -1,4 +1,4 @@
-import random, time, os, playsound, subprocess, string
+import random, time, os, playsound, subprocess, string, smtplib, ssl
 import wolframalpha, psutil
 #import forecastio
 from multiprocessing.pool import ThreadPool
@@ -13,8 +13,51 @@ from joke.jokes import *
 
 from Communication import Communication
 
-def email_contacts():
-    pass
+def punctuation(text):
+    text = text.replace(" exclamation mark", "!")
+    text = text.replace(" question mark", "?")
+    text = text.replace(" period", ".")
+    text = text.replace(" dot", ".")
+    text = text.replace(" underscore", "_")
+    text = text.replace(" newline", "\n")
+    text = text.replace(" tab", "\t")
+
+    return text
+
+def email_text(request):
+    request = punctuation(request)
+    print(request)
+    command = request.split(" ")
+    
+    address = "@gmail.com"
+    student_address = "@student.tdsb.on.ca"
+    teacher_address = "@tdsb.on.ca"
+
+    port = 465  # For SSL
+    smtp_server = "smtp.gmail.com"
+    sender_email = "mattheglas@gmail.com"  # Enter your address
+    password = "Poptropica30"
+    
+    if "student" in command[1].lower():
+        receiver = "".join(command[2:command.index("message")])
+        receiver_email = receiver + student_address  # Enter receiver address
+    else:
+        receiver = "".join(command[1:command.index("message")])
+        receiver_email = receiver + address  # Enter receiver address
+        print(receiver_email)
+    
+    message = " ".join(command[command.index("message")+1:])
+    print(message)
+
+    try:
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, message)
+    except:
+        return "Sorry sir, an error occured."
+
+    return "Message sent!"
 
 def handsfree_info():
     return ("After pressing the button on the left, the GUI will disappear. "

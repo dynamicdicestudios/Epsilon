@@ -20,7 +20,7 @@ def greeting() -> str:
     return greeting
 
 def respond(text: str) -> str:    
-    WORDS = ["Open", "System", "Notes", "Joke", "Time", "Help", "Battery", "Button", "Handsfree"]
+    WORDS = ["Open", "System", "Email", "Notes", "Joke", "Time", "Help", "Battery", "Button", "Handsfree"]
     SORRY = "I'm not quite sure what you mean."
     response = ""
     chatter_results = chatter_response(text)
@@ -28,20 +28,22 @@ def respond(text: str) -> str:
         response = open_command(text.lower())
     elif WORDS[1].lower() in text:
         response = system_command(text.lower())
+    elif WORDS[2].lower() in text.lower():
+        response = email_text(text)
     elif str(chatter_results) in WORDS:
-        if WORDS[2] == str(chatter_results):
+        if WORDS[3] == str(chatter_results):
             notes_command('w')
-        elif WORDS[3] == str(chatter_results):
-            response = jokes_command()
         elif WORDS[4] == str(chatter_results):
-            response = time_command()
+            response = jokes_command()
         elif WORDS[5] == str(chatter_results):
-            response = manual()
+            response = time_command()
         elif WORDS[6] == str(chatter_results):
-            response = battery_info()
+            response = manual()
         elif WORDS[7] == str(chatter_results):
-            response = buttons_info()
+            response = battery_info()
         elif WORDS[8] == str(chatter_results):
+            response = buttons_info()
+        elif WORDS[9] == str(chatter_results):
             response = handsfree_info()
     else:
         if str(chatter_results) == SORRY:
@@ -102,15 +104,17 @@ def main():
         end = False
         while end == False:
             check = cm.recognize_speech_from_mic()
+            print(check["transcription"])
             if check["transcription"] and "epsilon" in check["transcription"].lower():
                 cm.voice("Yes, sir?")
                 while True:
                     command = cm.recognize_speech_from_mic()
+                    print(command["transcription"])
                     if command["transcription"] or not command["success"]:
                         if "exit" in command["transcription"].lower():
                             end = True
                             break
-                        elif "wait" in command["transcription"].lower():
+                        elif "at ease" in command["transcription"].lower():
                             cm.voice("Sure, I'm hear when you need me!")
                             break
                         else:
@@ -121,19 +125,18 @@ def main():
         input_field.config(state=DISABLED)
         playsound.playsound('Sound.mp3', True)
         
-        command = cm.recognize_speech_from_mic()        
+        command = cm.recognize_speech_from_mic()
+        print(command["transcription"])
         if command["transcription"] or not command["success"]:
             editArea.config(state="normal")
             editArea.insert(END, 'You: %s\n\n' % command["transcription"])
             editArea.config(state=DISABLED)
 
             answer(command["transcription"])
-            input_field.config(state="normal")
-
         else:
-            input_field.config(state="normal")
-            thread = threading.Thread(target=answer, args = (input_get,))
-            thread.start()
+            answer("5ytr79i86fyr45rf8")
+
+        input_field.config(state="normal")
             
     def start():
         stt = threading.Thread(target=listen)
