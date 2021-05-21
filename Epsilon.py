@@ -4,6 +4,7 @@ import tkinter.scrolledtext as tkst
 from Commands import *
 from Chatter import chatter_response
 from Communication import Communication
+from Levenshtein import iterative_levenshtein
 
 def greeting() -> str:
     t = time.localtime()
@@ -59,7 +60,6 @@ def respond(text: str) -> str:
 def main():
     cm = Communication()
     window = Tk()
-    messages = Text(window)
     
     speak = PhotoImage(file = "speaker_icon.png")
     options = PhotoImage(file = "headset_icon.png")
@@ -73,24 +73,21 @@ def main():
 
     cm.voice(greet)
 
-    messages.pack(fill='both', expand='yes')
     editArea = tkst.ScrolledText(
-        master = messages,
+        master = window,
         wrap   = WORD,
-        width  = 20,
-        height = 10
+        width  = window.winfo_width(),
+        height = window.winfo_height()
     )
 
     editArea.insert(END, "Epsilon: " + greet + "\n\n")
     editArea.config(state=DISABLED)
-    messages.config(state=DISABLED)
 
     input_user = StringVar()
     input_field = Entry(window, text=input_user)
     input_field.pack(side=BOTTOM, fill=None, ipadx=15)
 
     editArea.configure(background='light steel blue')
-    messages.configure(background='light grey')
     input_field.configure(background='light goldenrod')
 
     # Don't use widget.place(), use pack or grid instead, since
@@ -105,7 +102,7 @@ def main():
         while end == False:
             check = cm.recognize_speech_from_mic()
             print(check["transcription"])
-            if check["transcription"] and "epsilon" in check["transcription"].lower():
+            if check["transcription"] and iterative_levenshtein("epsilon", check["transcription"].lower()) <= 3:
                 cm.voice("Yes, sir?")
                 while True:
                     command = cm.recognize_speech_from_mic()
