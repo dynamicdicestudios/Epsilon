@@ -54,3 +54,8 @@ def chatter_response(words):
         return "All done training!"
     else:
         return chatbot.get_response(words)
+
+while True:
+    response = input("What would you like to say to Epsilon? ")
+    print(chatter_response(response))
+    
